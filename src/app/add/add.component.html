@@ -1,0 +1,16 @@
+<div class="center">
+    <button routerLink="..">X</button>
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <p class="textsize">Add A Point</p>
+    <input type="text" class="myInput" name="name" ngModel placeholder="Add the name">
+    <input type="text" class="myInput" name="desc" ngModel placeholder="Add the Description">
+    <input type="radio"  ngModel id="Road" name="type" value="Road">
+    <label class="textsize" for="lbl1">Road</label><br>
+    <input type="radio" ngModel id="Street" name="type" value="Street">
+    <label class="textsize" for="lbl2">Street</label><br>
+    <input type="radio" ngModel id="Bridge" name="type" value="Bridge">
+    <label class="textsize" for="lbl3">Bridge</label>
+    <hr>
+    <button  class="btnn add" type="submit">Add</button>
+    </form>
+    </div>

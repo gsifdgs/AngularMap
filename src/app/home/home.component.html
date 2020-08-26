@@ -1,0 +1,19 @@
+<!-- 
+<div class="center">
+<p style="text-align: center;">Search</p>
+<input type="text" class="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+<select class="center" name="filter" id="filter"  [(ngModel)]="selectedOption" >
+    <option value="All">All</option>
+    <option value="Road">Road</option>
+    <option value="Street">Street</option>
+    <option value="Bridge">Bridge</option>
+  </select>
+</div> -->
+
+<div class="left-side">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="main-content">
+    <button class="btn closed" (click)="logout()">Logout</button>
+    <button class="btnn2" routerLink="/add">+</button>
+  </div>
