@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add',
@@ -7,11 +7,22 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  constructor() { }
+  addForm: FormGroup;
+  types=['Road', 'Street', 'Bridge'];
+  constructor() {}
 
   ngOnInit(): void {
+    this.addForm = new FormGroup({
+      'name': new FormControl(null),
+      'desc': new FormControl(null),
+      'type': new FormControl('Road'),
+      'active': new FormControl(null),
+      'onla': new FormControl(null),
+      'onlo': new FormControl(null)
+    })
   }
-  onSubmit(form: NgForm){
-    console.log("submitted"+ form);
+  onSubmit(){
+    console.log(this.addForm)
   }
+
 }

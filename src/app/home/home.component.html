@@ -11,9 +11,12 @@
 </div> -->
 
 <div class="left-side">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
+</div>
+<div class="main-content">
+  <div class="buttonstyle">
+    <button class="btn close" (click)="logout()">Logout</button>
+    <button class="btn add" routerLink="/add">+</button>
   </div>
-  <div class="main-content">
-    <button class="btn closed" (click)="logout()">Logout</button>
-    <button class="btnn2" routerLink="/add">+</button>
-  </div>
+  <div #map class="map"></div>
+</div>

@@ -1,16 +1,36 @@
-<div class="center">
-    <button routerLink="..">X</button>
-    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-    <p class="textsize">Add A Point</p>
-    <input type="text" class="myInput" name="name" ngModel placeholder="Add the name">
-    <input type="text" class="myInput" name="desc" ngModel placeholder="Add the Description">
-    <input type="radio"  ngModel id="Road" name="type" value="Road">
-    <label class="textsize" for="lbl1">Road</label><br>
-    <input type="radio" ngModel id="Street" name="type" value="Street">
-    <label class="textsize" for="lbl2">Street</label><br>
-    <input type="radio" ngModel id="Bridge" name="type" value="Bridge">
-    <label class="textsize" for="lbl3">Bridge</label>
-    <hr>
-    <button  class="btnn add" type="submit">Add</button>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="center">
+            <button style="background-color: rgb(216, 47, 84);" routerLink="..">X</button>
+            <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+                <p id="textsize">Add A Point</p>
+                <div class="form-group">
+                    <input type="text" class="myInput" id="name" formControlName="name" placeholder="Add the name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="myInput" id="desc" formControlName="desc"
+                        placeholder="Add the Description"></div>
+                <div class="radio" id="textsize" *ngFor="let type of types">
+                    <label>
+                        <input type="radio" formControlName="type" [value]="type">{{ type }}
+                    </label>
+                </div>
+                <hr>
+                <div id="textsize">
+                    <label>
+                        <input type="checkbox" class="form-check-input" formControlName="active">active
+                    </label>
+                </div>
+                <hr>
+                <div class="your-class">
+                    <label class="inputt" for="latitude">lat..</label>
+                    <input class="inputt" formControlName="onla" id="latitude" type="number" />
+                    <label class="inputt" for="Name">long..</label>
+                    <input class="inputt" formControlName="onlo" id="longitude" type="number" />
+                </div>
+                <hr>
+                <button class="btnn add" type="submit">Add</button>
+            </form>
+        </div>
     </div>
+</div>
