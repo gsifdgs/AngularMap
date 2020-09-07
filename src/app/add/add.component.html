@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="center">
-            <button style="background-color: rgb(216, 47, 84);" routerLink="..">X</button>
+            <button style="background-color: rgb(216, 47, 84);" (click)="changeDrawFalse()" routerLink=".." >X</button>
             <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
                 <p id="textsize">Add A Point</p>
                 <div class="form-group">
@@ -24,10 +24,11 @@
                 <hr>
                 <div class="your-class">
                     <label class="inputt" for="latitude">lat..</label>
-                    <input class="inputt" formControlName="onla" id="latitude" type="number" />
+                    <input readonly class="inputt" formControlName="onla" id="latitude" type="number" />
                     <label class="inputt" for="Name">long..</label>
-                    <input class="inputt" formControlName="onlo" id="longitude" type="number" />
+                    <input readonly class="inputt" formControlName="onlo" id="longitude" type="number" />
                 </div>
+                <button class="btnn add" type="button" (click)="changeDrawTrue()">Select A Point</button>
                 <hr>
                 <button class="btnn add" type="submit">Add</button>
             </form>

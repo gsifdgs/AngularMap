@@ -14,24 +14,29 @@ import {
   @Injectable({ providedIn: 'root' })
   export class LoginGuard implements CanActivate {
     constructor(private authService: LoginService, private router: Router) {}
-  
-    canActivate(
-      route: ActivatedRouteSnapshot,
-      router: RouterStateSnapshot
-    ):
-      | boolean
-      | UrlTree
-      | Promise<boolean | UrlTree>
-      | Observable<boolean | UrlTree> {
-      return this.authService.user.pipe(
-        take(1),
-        map(user => {
-          const isAuth = !!user;
-          if (isAuth) {
-            return true;
-          }
-          return this.router.createUrlTree(['/login']);
-        })
+    canActivate(route: ActivatedRouteSnapshot, 
+      state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+return this.authService.isAuthenticated().then(
+(authenticated:boolean)=>{if(authenticated){return true;}
+else{this.router.navigate(['/login']);}
+}
+    // canActivate(
+    //   route: ActivatedRouteSnapshot,
+    //   router: RouterStateSnapshot
+    // ):
+    //   | boolean
+    //   | UrlTree
+    //   | Promise<boolean | UrlTree>
+    //   | Observable<boolean | UrlTree> {
+    //   return this.authService.user.pipe(
+    //     take(1),
+    //     map(user => {
+    //       const isAuth = !!user;
+    //       if (isAuth) {
+    //         return true;
+    //       }
+    //       return this.router.createUrlTree(['/login']);
+    //     })
         // tap(isAuth => {
         //   if (!isAuth) {
         //     this.router.navigate(['/auth']);

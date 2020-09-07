@@ -13,10 +13,10 @@ export class AppComponent implements OnInit {
   constructor(private authService: LoginService) {}
 
   ngOnInit() {
-    this.authService.autoLogin();
-    this.userSub = this.authService.user.subscribe(user => {
-      this.isAuthenticated = !!user;
-    });
+    // this.authService.autoLogin();
+    // this.userSub = this.authService.user.subscribe(user => {
+    //   this.isAuthenticated = !!user;
+    // });
   }
 
 }

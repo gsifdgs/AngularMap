@@ -18,5 +18,8 @@
     <button class="btn close" (click)="logout()">Logout</button>
     <button class="btn add" routerLink="/add">+</button>
   </div>
-  <div #map class="map"></div>
+  <app-map>
+    <app-draw *ngIf="dataService.mapstate === 'DRAW'"></app-draw>
+  </app-map>
+
 </div>

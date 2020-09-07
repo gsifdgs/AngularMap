@@ -39,29 +39,33 @@ export class LoginComponent implements OnDestroy {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObs: Observable<LoginResponseData>;
+    // let authObs: Observable<LoginResponseData>;
 
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      authObs = this.authService.login(email, password);
+      // authObs = s
+      this.authService.login(email, password);
     } else {
-      authObs = this.authService.signup(email, password);
+      // authObs = 
+      this.authService.signup(email, password);
     }
-
-    authObs.subscribe(
-      resData => {
-        console.log(resData);
-        this.isLoading = false;
-        this.router.navigate(['/']);
-      },
-      errorMessage => {
-        console.log(errorMessage);
-        this.error = errorMessage;
-        // this.showErrorAlert(errorMessage);
-        this.isLoading = false;
-      }
-    );
+if(this.authService.isAuthenticated){
+  this.router.navigate(['/']);
+}
+    // authObs.subscribe(
+    //   resData => {
+    //     console.log(resData);
+    //     this.isLoading = false;
+    //     this.router.navigate(['/']);
+    //   },
+    //   errorMessage => {
+    //     console.log(errorMessage);
+    //     this.error = errorMessage;
+    //     // this.showErrorAlert(errorMessage);
+    //     this.isLoading = false;
+    //   }
+    // );
 
     form.reset();
   }
