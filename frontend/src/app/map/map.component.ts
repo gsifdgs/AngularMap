@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import VectorSource from 'ol/source/Vector';
 import { Circle, Fill, Style } from 'ol/style';
 import { Draw, Modify, Snap } from 'ol/interaction';
@@ -9,8 +9,8 @@ import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import TileLayer from 'ol/layer/Tile';
 import View from 'ol/View';
-import GeometryType from 'ol/geom/GeometryType';
-import { DrawComponent } from '../map/draw/draw.component';
+import { DataService } from '../data-shared/data.service';
+
 
 @Component({
   selector: 'app-map',
@@ -18,10 +18,25 @@ import { DrawComponent } from '../map/draw/draw.component';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+  @Input() newpoints: boolean;
   @ViewChild('map', { static: true }) private mapElementRef: ElementRef<HTMLDivElement>;
   map: Map;
-  
-  constructor() { }
+  coordAll: number[];
+  private pointVectorLayer: VectorLayer;
+  private pointVectorSource: VectorSource;
+  constructor(private dataService: DataService) {
+    const vectorlayer = new VectorLayer({
+      source: new VectorSource(),
+      style: new Style({
+        image: new Circle({
+          radius: 5,
+          fill: new Fill({ color: 'red' }),
+        }),
+      }),
+    });
+    this.pointVectorLayer = vectorlayer;
+    this.pointVectorSource = vectorlayer.getSource();
+  }
 
   ngOnInit(): void {
     this.map = new Map({
@@ -29,7 +44,6 @@ export class MapComponent implements OnInit {
         new TileLayer({
           source: new OSM(),
         }),
-
       ],
       target: this.mapElementRef.nativeElement,
       view: new View({
@@ -37,10 +51,29 @@ export class MapComponent implements OnInit {
         zoom: 2,
       }),
     });
-//draw
-
+    this.map.addLayer(this.pointVectorLayer);
+    this.dataService.featureArraySubject.subscribe(this.drawPoints);
   }
-getScratchVectorSource(){
 
-}
+ drawPoints = (datas) => {
+
+    const features = [];
+    for (const item of datas) {
+      const point = new Point([item.x, item.y]).transform('EPSG:4326', 'EPSG:3857');
+      const feature = new Feature(point);
+      feature.setProperties(item);
+      feature.setId(item.id);
+      features.push(feature);
+    }
+    this.pointVectorSource.clear();
+    this.pointVectorSource.addFeatures(features);
+  }
+
+  public getPointVectorSource() {
+    return this.pointVectorSource;
+  }
+  public getPointVectorLayer() {
+    return this.pointVectorLayer;
+  }
+
 }

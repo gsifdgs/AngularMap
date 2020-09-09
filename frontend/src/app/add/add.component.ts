@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { NgForm, FormGroup, FormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
 import { DataService } from '../data-shared/data.service';
-import { Point } from 'ol/geom';
-import Feature from 'ol/Feature';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Component({
@@ -12,54 +13,51 @@ import Feature from 'ol/Feature';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit, OnDestroy {
-  addForm: FormGroup;
-  Form1: FormGroup;
-  Form2: FormGroup;
-  coordAll: number[];
-  coordX: number;
-  coordY: number;
+  addForm = new FormGroup({
+    'name': new FormControl(null, Validators.required),
+    'desc': new FormControl(null),
+    'type': new FormControl('road', Validators.required),
+    'active': new FormControl(false, Validators.required),
+    'lat': new FormControl(null, Validators.required),
+    'lon': new FormControl(null, Validators.required)
+  });
 
   openInteraction = new Subject<boolean>();
 
-  types = ['Road', 'Street', 'Bridge'];
+  types = ['road', 'street', 'bridge'];
 
-  constructor(private data: DataService) { }
-
+  private drawEndSubscription: Subscription;
+  constructor(private httpClient: HttpClient, private dataService: DataService) { }
+  
   ngOnInit(): void {
-    console.log("acildi")
-    this.addForm = new FormGroup({
-      'name': new FormControl(null),
-      'desc': new FormControl(null),
-      'type': new FormControl('Road'),
-      'active': new FormControl(null),
-      'onla': new FormControl(this.coordX),
-      'onlo': new FormControl(this.coordY)
-    });
-    
-    this.data.getpointCoordinates.subscribe(evtt => {
-      console.log("last", evtt.getFlatCoordinates());
-      this.coordAll=evtt.getFlatCoordinates()
-      this.coordX=this.coordAll[0];
-      this.coordY=this.coordAll[1];
-      console.log(" coordx: ", this.coordX," coordy: ", this.coordY)
-    this.addForm.get('onla').patchValue(this.coordX);
-    this.addForm.updateValueAndValidity();
-    this.addForm.get('onlo').patchValue(this.coordY);
-    this.addForm.updateValueAndValidity();
+    this.drawEndSubscription = this.dataService.drawEndSubject.subscribe((point) => {
+      const [x, y] = point;
+      this.addForm.patchValue({
+        lon: x,
+        lat: y,
+      })
     })
   }
   onSubmit() {
-    this.data.messageSource.next(false);
     console.log(this.addForm)
-    
+    const payload = {
+      name: this.addForm.get('name').value,
+      x: this.addForm.get('onla').value,
+      y: this.addForm.get('onlo').value,
+      type: this.addForm.get('type').value,
+      description: this.addForm.get('desc').value,
+      active: this.addForm.get('active').value,
+    }
+    const url = `${environment.apiurl}point`;
+    this.httpClient.post(url, payload).toPromise()
   }
-changeDrawTrue(){
-  this.data.messageSource.next(true);
-}
-  changeDrawFalse() {
-    this.data.messageSource.next(false);
+  changeDrawTrue() {
+    this.dataService.mapstate = 'DRAW';
   }
   ngOnDestroy(): void {
-    console.log("kapandi")
+    console.log("kapandi");
+    if(this.drawEndSubscription) {
+      this.drawEndSubscription.unsubscribe();
+    }
   }
 }

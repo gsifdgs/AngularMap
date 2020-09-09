@@ -9,7 +9,7 @@
     margin: 0 auto;
     padding: 10px;
   }
-#textsize{
+.textsize{
   font-size: 22px;
   text-align: center;
   font-weight: bold;

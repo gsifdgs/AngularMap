@@ -1,18 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login/login.service';
-import VectorSource from 'ol/source/Vector';
-import { Circle, Fill, Style } from 'ol/style';
-import { Draw } from 'ol/interaction';
-import VectorLayer from 'ol/layer/Vector';
-import Feature from 'ol/Feature'
-import { Point } from 'ol/geom';
-import Map from 'ol/Map';
-import OSM from 'ol/source/OSM';
-import TileLayer from 'ol/layer/Tile';
-import View from 'ol/View';
-import GeometryType from 'ol/geom/GeometryType';
 import { DataService } from '../data-shared/data.service';
 import { DrawEvent } from 'ol/interaction/Draw';
+import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
+import Feature from 'ol/Feature';
 
 
 @Component({
@@ -26,18 +17,43 @@ export class HomeComponent implements OnInit {
   evtt: DrawEvent;
   selectedOption = "All";
   constructor(private authService: LoginService,
-    public dataService: DataService) { }
-
+    public dataService: DataService, private route: ActivatedRoute, private router: Router) { }
+  public newCoordinats: any;
   ngOnInit(): void {
-    this.dataService.messageSource.subscribe(booleanmap => {
-      if (booleanmap == true) {
-        this.dataService.mapstate = "DRAW";
-      } else {
-        this.dataService.mapstate = "DEFAULT"
+
+    this.helloChild()
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.helloChild()
       }
     })
   }
-  
+
+  private helloChild() {
+    const firstChild = this.route.snapshot.firstChild.url
+    console.log('firstChild', firstChild.toString())
+    if (firstChild.toString() == "add") {
+      console.log("add'desin, type:default");
+      this.dataService.mapstate = "DEFAULT";
+    }
+    else {
+      console.log("add'de değisin, type:select");
+      this.dataService.mapstate = "SELECT"
+    }
+  }
+  drawEnd(point: number[]) {
+    console.log(point);
+    this.dataService.drawEndSubject.next(point);
+  }
+  selectEnd(select: Feature) {
+    if (select) {
+      const id = +select.getId();
+      this.router.navigate(['/' + id]);
+    }
+    else {
+      this.router.navigate(['/']);
+    }
+  }
   logout() {
     // this.authService.logout();
   }

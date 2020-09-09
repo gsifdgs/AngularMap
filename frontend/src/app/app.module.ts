@@ -32,7 +32,7 @@ import { SelectComponent } from './map/select/select.component'
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     DataService,
