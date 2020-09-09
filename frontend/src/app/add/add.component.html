@@ -1,15 +1,14 @@
 <div class="container">
     <div class="row">
         <div class="center">
-            <button style="background-color: rgb(216, 47, 84);" routerLink=".." >X</button>
+            <button style="background-color: rgb(216, 47, 84);" routerLink="..">X</button>
             <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
                 <p class="textsize">Add A Point</p>
                 <div class="form-group">
-                    <input type="text" class="myInput"  formControlName="name" placeholder="Add the name">
+                    <input type="text" class="myInput" formControlName="name" placeholder="Add the name">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="myInput" formControlName="desc"
-                        placeholder="Add the Description"></div>
+                    <input type="text" class="myInput" formControlName="desc" placeholder="Add the Description"></div>
                 <div class="textsize" *ngFor="let type of types">
                     <label>
                         <input type="radio" formControlName="type" [value]="type">{{ type }}
@@ -23,15 +22,15 @@
                 </div>
                 <hr>
                 <div class="your-class">
+                    <label class="inputt" for="longtitude">long..</label>
+                    <input readonly class="inputt" id="longtitude" formControlName="lon" type="number" />
                     <label class="inputt" for="latitude">lat..</label>
-                    <input readonly class="inputt" formControlName="lat" type="number" />
-                    <label class="inputt" for="Name">long..</label>
-                    <input readonly class="inputt" formControlName="lon"  type="number" />
+                    <input readonly class="inputt" id="latitude" formControlName="lat" type="number" />
+
                 </div>
                 <button class="btnn add" type="button" (click)="changeDrawTrue()">Select A Point</button>
                 <hr>
-                <span *ngIf="!addForm.valid && addForm.touched" 
-                class="help-block">Please enter a valid data</span>
+                <span *ngIf="!addForm.valid && addForm.touched" style="color: red;">Please enter a valid data</span>
                 <button [disabled]="!addForm.valid" class="btnn add" type="submit">Add</button>
             </form>
         </div>

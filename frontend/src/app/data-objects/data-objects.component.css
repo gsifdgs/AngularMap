@@ -1,0 +1,39 @@
+.myInput {
+    width: 80%;
+    font-size: 12px;
+    padding: 12px 20px 12px 40px;
+    margin-bottom: 5px;
+  }
+  .center {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+  }
+.textsize{
+  font-size: 22px;
+  text-align: center;
+  font-weight: bold;
+  color: rgb(7, 241, 18);
+}
+.btnn.add {
+  
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(31, 143, 207);
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px auto;
+  color: white;
+}
+.your-class{
+  display: table
+}
+.inputt{
+  margin-right: 5px;
+  color: rgb(7, 241, 18);
+  font-weight: bold;
+  width: 40px;
+  display: table-cell
+}

@@ -38,18 +38,19 @@ export class AddComponent implements OnInit, OnDestroy {
       })
     })
   }
-  onSubmit() {
+  async onSubmit() {
     console.log(this.addForm)
     const payload = {
       name: this.addForm.get('name').value,
-      x: this.addForm.get('onla').value,
-      y: this.addForm.get('onlo').value,
+      x: this.addForm.get('lon').value,
+      y: this.addForm.get('lat').value,
       type: this.addForm.get('type').value,
       description: this.addForm.get('desc').value,
       active: this.addForm.get('active').value,
     }
     const url = `${environment.apiurl}point`;
-    this.httpClient.post(url, payload).toPromise()
+    await this.httpClient.post(url, payload).toPromise();
+    this.dataService.refreshMapData();
   }
   changeDrawTrue() {
     this.dataService.mapstate = 'DRAW';

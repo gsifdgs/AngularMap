@@ -14,8 +14,9 @@ import { HttpClient } from '@angular/common/http';
 export class DataObjectsComponent implements OnInit {
   data: PointData;
   updateForm = new FormGroup({
+    'id': new FormControl('', Validators.required),
     'name': new FormControl('', Validators.required),
-    'desc': new FormControl(''),
+    'description': new FormControl(''),
     'type': new FormControl('bridge', Validators.required),
     'active': new FormControl(false, Validators.required),
     'x': new FormControl(0, Validators.required),
@@ -35,12 +36,13 @@ export class DataObjectsComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.updateForm)
+    const id= this.updateForm.get('id').value;
     const sendData = {
       name: this.updateForm.get('name').value,
-      x: this.updateForm.get('onla').value,
-      y: this.updateForm.get('onlo').value,
+      x: this.updateForm.get('x').value,
+      y: this.updateForm.get('y').value,
       type: this.updateForm.get('type').value,
-      description: this.updateForm.get('desc').value,
+      desc: this.updateForm.get('description').value,
       active: this.updateForm.get('active').value,
     }
 

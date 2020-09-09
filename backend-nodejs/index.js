@@ -34,21 +34,21 @@ app.get('/api/point/:id', async (req, res, next) => {
         });
     }
 });
-app.get('/api/filter', async (req, res, next) => {
-    try {
-        const result = await DB.client.query(`SELECT id, name, type, description, active, st_x(geom) x,  st_y(geom) y FROM "point" WHERE "name"='${req.params.name}'`);
-        if (result.rows.length === 1) {
-            return res.status(200).json(result.rows[0]);
-        } else {
-            throw new Error('Bulunamadı')
-        }
-    } catch (error) {
-        res.status(400).json({
-            error: error.message,
-            code: 'NotFound'
-        });
-    }
-});
+// app.get('/api/filter', async (req, res, next) => {
+//     try {
+//         const result = await DB.client.query(`SELECT id, name, type, description, active, st_x(geom) x,  st_y(geom) y FROM "point" WHERE "name"='${req.params.name}'`);
+//         if (result.rows.length === 1) {
+//             return res.status(200).json(result.rows[0]);
+//         } else {
+//             throw new Error('Bulunamadı')
+//         }
+//     } catch (error) {
+//         res.status(400).json({
+//             error: error.message,
+//             code: 'NotFound'
+//         });
+//     }
+// });
 app.post('/api/point', async (req, res, next) => {
     try {
         console.log(req.body)

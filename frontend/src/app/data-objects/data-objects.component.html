@@ -1,11 +1,16 @@
-
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
-    <p class="textsize">Add A Point</p>
+    <p class="textsize">Point Data</p>
     <div class="form-group">
-        <input type="text" class="myInput" formControlName="name" placeholder="Add the name">
+        <label class="inputt" for="id">Id</label>
+        <input readonly type="text" id="id" class="myInput"  formControlName="id">
     </div>
     <div class="form-group">
-        <input type="text" class="myInput" formControlName="desc" placeholder="Add the Description"></div>
+        <label class="inputt" for="name">Name</label>
+        <input type="text" id="name" class="myInput" formControlName="name" placeholder="Add the name">
+    </div>
+    <div class="form-group">
+        <label class="inputt" for="description">Description</label>
+        <input type="text" id="description" class="myInput" formControlName="description" placeholder="Add the Description"></div>
     <div class="textsize" *ngFor="let type of pointTypeArray">
         <label>
             <input type="radio" formControlName="type" [value]="type">{{ type }}
@@ -20,12 +25,13 @@
     <hr>
     <div class="your-class">
         <label class="inputt" for="latitude">lat..</label>
-        <input readonly class="inputt" formControlName="y" type="number" />
-        <label class="inputt" for="Name">long..</label>
         <input readonly class="inputt" formControlName="x" type="number" />
+        <label class="inputt" for="Name">long..</label>
+        <input readonly class="inputt" formControlName="y" type="number" />
     </div>
     <!-- <button class="btnn add" type="button" (click)="changeDrawTrue()">Select A Point</button> -->
     <hr>
-    <!-- <span *ngIf="!addForm.valid && addForm.touched" class="help-block">Please enter a valid data</span>
-    <button [disabled]="!addForm.valid" class="btnn add" type="submit">Add</button> -->
+    <span *ngIf="!updateForm.valid && updateForm.touched" style="color: red;">Please enter a valid data</span>
+    <button [disabled]="!updateForm.valid" class="btnn add" type="button">Update</button>
+    <button [disabled]="!updateForm.valid" class="btnn add" type="button">Delete</button>
 </form>
