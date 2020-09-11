@@ -6,5 +6,5 @@ const opt = {
 
 const client = new Client(opt);
 
-module.exports = {client, Client}
+module.exports = {client: client, Client: Client}
 //setsrid  makepoint stezgeojson
