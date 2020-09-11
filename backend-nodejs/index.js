@@ -20,7 +20,6 @@ app.get('/api/point', async (req, res, next) => {
         res.status(400).json(error);
     }
 });
-
 app.get('/api/point/:id', async (req, res, next) => {
     try {
         const text = `SELECT id, name, type, description, active, st_x(geom) x,  st_y(geom) y FROM "point" WHERE "id"= $1 `;
