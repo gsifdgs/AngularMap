@@ -2,7 +2,7 @@
     <p class="textsize">Point Data</p>
     <div class="form-group">
         <label class="inputt" for="id">Id</label>
-        <input readonly type="text" id="id" class="myInput"  formControlName="id">
+        <input readonly type="text" style="background-color: gray;" id="id" class="myInput"  formControlName="id">
     </div>
     <div class="form-group">
         <label class="inputt" for="name">Name</label>
@@ -32,6 +32,6 @@
     <!-- <button class="btnn add" type="button" (click)="changeDrawTrue()">Select A Point</button> -->
     <hr>
     <span *ngIf="!updateForm.valid && updateForm.touched" style="color: red;">Please enter a valid data</span>
-    <button [disabled]="!updateForm.valid" class="btnn add" type="button">Update</button>
-    <button [disabled]="!updateForm.valid" class="btnn add" type="button">Delete</button>
+    <button [disabled]="!updateForm.valid" class="btnn add" (click)="onUpdate()">Update</button>
+    <button [disabled]="!updateForm.valid" class="btnn add" (click)="onDelete()" type="button">Delete</button>
 </form>

@@ -1,10 +1,19 @@
 <div class="center">
-    <p class="textsize">Search</p>
-    <input type="text" class="myInput" onkeyup="myFunction()" placeholder="Search for names..">
-    <select class="select search" name="filter" id="filter"  [(ngModel)]="selectedOption" >
-        <option value="All">All</option>
-        <option value="Road">Road</option>
-        <option value="Street">Street</option>
-        <option value="Bridge">Bridge</option>
-      </select>
-    </div>
+  <p class="textsize">Search</p>
+  <input type="text" class="myInput" placeholder="Search for names.." [(ngModel)]="SearchOption">
+  <label for="type" class="textsize">Type</label>
+  <select class="select search" id="type" name="typefilter" [(ngModel)]="TypeOption">
+    <option value="all">All</option>
+    <option value="road">Road</option>
+    <option value="street">Street</option>
+    <option value="bridge">Bridge</option>
+  </select>
+  <label for="active" class="textsize">Active</label>
+  <select class="select search" id="active" name="activefilter" [(ngModel)]="ActiveOption">
+    <option value="all">All</option>
+    <option value="active">Active</option>
+    <option value="passive">Passive</option>
+  </select>
+  <hr>
+  <button class="select filter" (click)="filterPoint()">Filter</button>
+</div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Data, PointData } from '../data-shared/data.model'
 import { DataService } from '../data-shared/data.service'
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -24,28 +24,38 @@ export class DataObjectsComponent implements OnInit {
   });
   pointTypeArray = ['road', 'street', 'bridge'];
   constructor(private dataService: DataService,
+    private router: Router,
     private route: ActivatedRoute,
     private httpClient: HttpClient) { }
-
+private id:number;
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const id = +params['id'];
+      this.id=id;
       this.reloadForm(id);
     });
-
   }
   onSubmit() {
     console.log(this.updateForm)
-    const id= this.updateForm.get('id').value;
+  }
+  async onUpdate() {
     const sendData = {
       name: this.updateForm.get('name').value,
       x: this.updateForm.get('x').value,
       y: this.updateForm.get('y').value,
       type: this.updateForm.get('type').value,
-      desc: this.updateForm.get('description').value,
+      description: this.updateForm.get('description').value,
       active: this.updateForm.get('active').value,
     }
-
+    const url = `${environment.apiurl}point/${this.id.toString()}`;
+    await this.httpClient.put(url, sendData).toPromise();
+    this.dataService.refreshMapData();
+  }
+  async onDelete() {
+    const url = `${environment.apiurl}point/${this.id.toString()}`;
+    await this.httpClient.delete(url).toPromise();
+    this.dataService.refreshMapData();
+    this.router.navigate(['/']);
   }
   async reloadForm(id: number) {
     const url = `${environment.apiurl}point/${id.toString()}`;

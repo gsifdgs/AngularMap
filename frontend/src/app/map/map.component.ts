@@ -18,21 +18,35 @@ import { DataService } from '../data-shared/data.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  @Input() newpoints: boolean;
   @ViewChild('map', { static: true }) private mapElementRef: ElementRef<HTMLDivElement>;
   map: Map;
   coordAll: number[];
   private pointVectorLayer: VectorLayer;
   private pointVectorSource: VectorSource;
+  activestyle = new Style({
+    image: new Circle({
+      radius: 5,
+      fill: new Fill({ color: 'blue' }),
+    }),
+  })
+  pasivestyle = new Style({
+    image: new Circle({
+      radius: 5,
+      fill: new Fill({ color: 'red' }),
+    }),
+  })
+
   constructor(private dataService: DataService) {
     const vectorlayer = new VectorLayer({
       source: new VectorSource(),
-      style: new Style({
-        image: new Circle({
-          radius: 5,
-          fill: new Fill({ color: 'red' }),
-        }),
-      }),
+      style: (feature) => {
+        if (feature.get("active")) {
+          return this.activestyle;
+        }
+        else {
+          return this.pasivestyle;
+        }
+      }
     });
     this.pointVectorLayer = vectorlayer;
     this.pointVectorSource = vectorlayer.getSource();
@@ -55,14 +69,20 @@ export class MapComponent implements OnInit {
     this.dataService.featureArraySubject.subscribe(this.drawPoints);
   }
 
- drawPoints = (datas) => {
-
+  drawPoints = (datas) => {
     const features = [];
     for (const item of datas) {
       const point = new Point([item.x, item.y]).transform('EPSG:4326', 'EPSG:3857');
       const feature = new Feature(point);
       feature.setProperties(item);
       feature.setId(item.id);
+      // if (item.active) {
+      //   feature.setStyle(this.activestyle )
+      // }
+      // else {
+      //   feature.setStyle(this.pasivestyle )
+      // }
+
       features.push(feature);
     }
     this.pointVectorSource.clear();

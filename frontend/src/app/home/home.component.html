@@ -18,7 +18,7 @@
     <button class="btn close" (click)="logout()">Logout</button>
     <button class="btn add" routerLink="/add">+</button>
   </div>
-  <app-map [newpoints]="newCoordinats">
+  <app-map >
     <app-draw (drawend)="drawEnd($event)" *ngIf="dataService.mapstate === 'DRAW'"></app-draw>
     <app-select (select)="selectEnd($event)" *ngIf="dataService.mapstate === 'SELECT'"></app-select>
   </app-map>

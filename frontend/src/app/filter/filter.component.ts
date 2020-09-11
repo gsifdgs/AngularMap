@@ -6,24 +6,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
-  selectedOption="All";
+  SearchOption = "";
+  TypeOption = "all";
+  ActiveOption = "all";
   constructor() { }
 
   ngOnInit(): void {
   }
-  myFunction() {
-if(this.selectedOption=="All"){
+  filterPoint() {
+    if(this.SearchOption!=""){
+      console.log('search: ',this.SearchOption)
+    }
+    if (this.TypeOption !== "all") {
+      console.log('type: ',this.TypeOption);
+    }
+    if (this.ActiveOption !== "all") {
+      console.log('active: ',this.ActiveOption);
+    }
+    else {
 
-}
-if(this.selectedOption=="Road"){
-
-}
-if(this.selectedOption=="Street"){
-
-}
-if(this.selectedOption=="Bridge"){
-
-}
+    }
   }
 
 }

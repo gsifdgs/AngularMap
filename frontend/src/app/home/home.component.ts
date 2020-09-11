@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   selectedOption = "All";
   constructor(private authService: LoginService,
     public dataService: DataService, private route: ActivatedRoute, private router: Router) { }
-  public newCoordinats: any;
   ngOnInit(): void {
 
     this.helloChild()
