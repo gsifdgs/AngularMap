@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   Component,
   ComponentFactoryResolver,
@@ -7,6 +8,7 @@ import {
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { LoginService, LoginResponseData } from './login.service';
 
@@ -25,14 +27,15 @@ export class LoginComponent implements OnDestroy {
   constructor(
     private authService: LoginService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private httpClient: HttpClient
+  ) { }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
-  onSubmit(form: NgForm) {
+  async onSubmit(form: NgForm) {
     if (!form.valid) {
       return;
     }
@@ -43,16 +46,17 @@ export class LoginComponent implements OnDestroy {
 
     this.isLoading = true;
 
-    if (this.isLoginMode) {
-      // authObs = s
-      this.authService.login(email, password);
-    } else {
-      // authObs = 
-      this.authService.signup(email, password);
-    }
-if(this.authService.isAuthenticated){
-  this.router.navigate(['/']);
-}
+    // if (this.isLoginMode) {
+    // authObs = s
+
+    this.authService.login(email, password);
+    // } else {
+    //   // authObs = 
+    //   this.authService.signup(email, password);
+    // }
+    // if (this.authService.isAuthenticated) {
+    //   this.router.navigate(['/']);
+    // }
     // authObs.subscribe(
     //   resData => {
     //     console.log(resData);

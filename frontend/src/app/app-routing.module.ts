@@ -9,7 +9,7 @@ import { DataObjectsComponent } from './data-objects/data-objects.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  {path: '', component: HomeComponent, children: [
+  {path: '', component: HomeComponent, canActivate: [LoginGuard], children: [
       { path: 'add', component: AddComponent },
       { path: '', component: FilterComponent },
       { path: ':id', component: DataObjectsComponent },
