@@ -30,7 +30,7 @@
                 </div>
                 <button class="btnn add" type="button" (click)="changeDrawTrue()">Select A Point</button>
                 <hr>
-                <span *ngIf="!addForm.valid && addForm.touched" style="color: red;">Please enter a valid data</span>
+                <span *ngIf="!addForm.valid && addForm.touched" style="color: blue;">Please enter a valid data</span>
                 <button [disabled]="!addForm.valid" class="btnn add" type="submit">Add</button>
             </form>
         </div>
