@@ -33,7 +33,7 @@ export class SelectComponent implements OnInit, OnDestroy {
 
   }
   ngOnDestroy() {
-    console.log('SelectComponent ngOnDestroy')
+    console.log('SelectComponent - ngOnDestroy')
     this.mapComponent.map.removeInteraction(this.select);
   }
 }
