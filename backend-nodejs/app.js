@@ -24,22 +24,26 @@ const getIdFromReq = (req) => {
     return id
 }
 const checkAuthentication = async (req, res, next) => {
-    console.log(req.cookies)
+     //console.log(req.cookies)
     if(!req.cookies.userCookie) {
         return res.status(401).json({success: false, message: 'unauthenticated'})
+        //console.log("giris basarisiz")
     }
     const cookie = req.cookies.userCookie;
     try {
         const decoded = jwt.verify(cookie, TOKEN_SECRET_KEY)
-        console.log('decoded', decoded)
+        // console.log('decoded', decoded)
+        //console.log("giris basarili")
         next();
         
     } catch (error) {
         return res.status(401).json({success: false, message: 'unauthenticated'})
+        //console.log("giris basarisiz")
     }
 }
 app.get('/api/checkauthentication', checkAuthentication, (req, res, next) => {
-    res.json({})
+    //console.log("giris dogrulandi")
+    res.json({success: true})
 })
 app.get('/api/point', async (req, res, next) => {
     try {
@@ -69,9 +73,10 @@ app.get('/api/point/:id', async (req, res, next) => {
     }
 });
 
-app.post('/api/point', async (req, res, next) => {
+app.post('/api/point', //checkAuthentication, 
+async (req, res, next) => {
     try {
-        // console.log(req.body)
+        //console.log(req.body)
         const name = req.body.name;
         const x = req.body.x;
         const y = req.body.y;

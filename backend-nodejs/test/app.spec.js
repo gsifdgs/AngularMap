@@ -5,8 +5,46 @@ const chai = require('chai');
 const expect = chai.expect;
 const sinon = require('sinon');
 
+let COOKIE_VALUE = null;
 describe('api test', () => {
+    it('should test user.post api/user', async () => {
 
+        const callback = sinon.stub(DB.client, 'query');
+        callback.returns(Promise.resolve({
+            rows: [{
+                id: 40,
+                name: 'admin',
+                email: 'admin@gmail.com',
+                password: 'B109F3BBBC244EB82441917ED06D618B9008DD09B3BEFD1B5E07394C706A8BB980B1D7785E5976EC049B46DF5F1326AF5A2EA6D103FD07C95385FFAB0CACBC86'
+            }]
+        }))
+
+        const res = await request(app).post('/api/user').send({
+            email: 'admin@gmail.com',
+            password: 'password'
+        });
+        expect(callback.calledWith(
+            'SELECT id, name, email, password FROM "user_log" WHERE "email"= $1 AND "password"= $2'))
+            .to.equal(true)
+
+        callback.restore()
+
+        expect(res.status).to.equal(200)
+        expect(res.header).to.have.property('access-control-allow-origin')
+        expect(res.header).to.have.property('access-control-allow-headers')
+        expect(res.header).to.have.property('access-control-allow-methods')
+        // console.log('res.header', res.header)
+        expect(res.header).to.have.property('set-cookie');
+        expect(res.header['set-cookie'][0]).to.be.a('string');
+        expect(res.header['set-cookie'][0]).contains('userCookie=');
+        COOKIE_VALUE = res.header['set-cookie'][0]
+        // console.log(COOKIE_VALUE);
+        // expect(res.body).to.have.property('id')
+        // expect(res.body).to.have.property('name')
+        // expect(res.body).to.have.property('email')
+        // expect(res.body).to.have.property('password')
+
+    })
     it('should test api/point', async () => {
 
         const callback = sinon.stub(DB.client, 'query');
@@ -104,7 +142,7 @@ describe('api test', () => {
             }]
         }))
 
-        const res = await request(app).post('/api/point').send({
+        const res = await request(app).post('/api/point').set('Cookie', COOKIE_VALUE).send({
             name: 'deneme',
             description: 'deneme',
             x: 1,
@@ -206,42 +244,15 @@ describe('api test', () => {
         // expect(res.body).to.have.property('description')
         // expect(res.body).to.have.property('active')
     })
-    it('should test user.post api/user', async () => {
 
-        const callback = sinon.stub(DB.client, 'query');
-        callback.returns(Promise.resolve({
-            rows: [{
-                id: 40,
-                name: 'admin',
-                email: 'admin@gmail.com',
-                password: 'B109F3BBBC244EB82441917ED06D618B9008DD09B3BEFD1B5E07394C706A8BB980B1D7785E5976EC049B46DF5F1326AF5A2EA6D103FD07C95385FFAB0CACBC86'
-            }]
-        }))
+    it('should checkauthentication', async () => {
+        const res = await request(app).get('/api/checkauthentication')
+            .set('Cookie', COOKIE_VALUE);
 
-        const res = await request(app).post('/api/user')
-            .set('Cookie', 'token=12345667;myApp-other=blah').send({
-                email: 'admin@gmail.com',
-                password: 'password'
-            });
-        expect(callback.calledWith(
-            'SELECT id, name, email, password FROM "user_log" WHERE "email"= $1 AND "password"= $2'))
-            .to.equal(true)
 
-        callback.restore()
-
-        expect(res.header).to.have.property('access-control-allow-origin')
-        expect(res.header).to.have.property('access-control-allow-headers')
-        expect(res.header).to.have.property('access-control-allow-methods')
-        // console.log('res.header', res.header)
-        expect(res.header).to.have.property('set-cookie');
-        expect(res.header['set-cookie'][0]).to.be.a('string');
-        expect(res.header['set-cookie'][0]).contains('userCookie=');
-        // console.log(res.header['set-cookie'][0]);
-        // expect(res.body).to.have.property('id')
-        // expect(res.body).to.have.property('name')
-        // expect(res.body).to.have.property('email')
-        // expect(res.body).to.have.property('password')
-
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('success')
+        expect(res.body.success).to.equal(true)
     })
 
 
@@ -268,39 +279,15 @@ describe('api test', () => {
         expect(res.body).to.have.property('error')
     })
 
-    // it('should test user authentication api/checkauthentication', async () => {
-    //     // const callback = sinon.stub(DB.client, 'query');
-    //     // callback.returns(Promise.resolve({
-    //     //     rows: [{
-    //     //         id: 40,
-    //     //         email: 'admin@gmail.com',
-    //     //     }]
-    //     // }))
-    //     const res = await request(app).get('/api/checkauthentication')
-    //         .set('Cookie', '')
+    it('should api/checkauthentication return 401', async () => {
 
-    //     console.log(res.body)
-    //     expect(res.header).to.have.property('access-control-allow-origin')
-    //     expect(res.header).to.have.property('access-control-allow-headers')
-    //     expect(res.header).to.have.property('access-control-allow-methods')
-    //     // expect(res.header).to.have.property('set-cookie');
-    //     // expect(res.header['set-cookie'][0]).to.be.a('string');
-    //     // expect(res.header['set-cookie'][0]).contains('userCookie=');
-    // })
+        const res = await request(app).get('/api/checkauthentication')
 
-    // it('should test user not authenticated error api/checkauthentication', async () => {
-    //     // const callback = sinon.stub(DB.client, 'query');
-    //     // callback.returns(Promise.resolve({
-    //     //     rows: []
-    //     // }))
-    //     const res = await request(app).get('/api/checkauthentication')
-    //         // .set('Cookie', null)
-    //     expect(res.header).to.have.property('access-control-allow-origin')
-    //     expect(res.header).to.have.property('access-control-allow-headers')
-    //     expect(res.header).to.have.property('access-control-allow-methods')
-    //     expect(res.status).to.equal(401)
-    //     // expect(res.body).to.have.property('error')
-    // })
+        expect(res.header).to.have.property('access-control-allow-origin')
+        expect(res.header).to.have.property('access-control-allow-headers')
+        expect(res.header).to.have.property('access-control-allow-methods')
+        expect(res.status).to.equal(401)
+    })
 })
 
 
